@@ -23,10 +23,10 @@ export default function ConsumptionGraphDaily() {
       try {
         const response = await fetch('/api/getSensorDataDaily');
         const data = await response.json();
-        console.log(data);
+        //console.log(data);
         setSensorData(data["data"]);
       } catch (error) {
-        console.error("Error fetching sensor data:", error);
+        //console.error("Error fetching sensor data:", error);
       }
     };
 

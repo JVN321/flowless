@@ -16,7 +16,7 @@ export async function GET() {
       SELECT id, consumption, date 
       FROM water_levels_daily 
       ORDER BY date DESC 
-      LIMIT 30
+      LIMIT 7
     `);
 
     return NextResponse.json(
@@ -24,7 +24,7 @@ export async function GET() {
       { status: 200 }
     );
   } catch (error: any) {
-    console.error("Database Error:", error.message);
+    //console.error("Database Error:", error.message);
     return NextResponse.json({ success: false, error: error.message }, { status: 500 });
   }
 }

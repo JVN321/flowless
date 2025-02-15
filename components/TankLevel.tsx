@@ -2,22 +2,57 @@
 import React, { useEffect, useState } from "react";
 
 interface TankLevelProps {
-  level: number; // Level percentage (0-100)
-  height?: number; // Tank height in pixels
-  width?: number; // Tank width in pixels
-  color?: string; // Water color
+  height?: number;
+  width?: number;
+  color?: string;
 }
 
-const TankLevel: React.FC<TankLevelProps> = ({ level, height = 200, width = 100, color = "#2196f3" }) => {
+interface SensorData {
+  sensor1: number;
+}
+
+const MLITTER_PER_CM = 200;
+
+const TankLevel: React.FC<TankLevelProps> = ({ height = 200, width = 100, color = "#2196f3" }) => {
   const [currentLevel, setCurrentLevel] = useState(0);
 
   useEffect(() => {
-    // Animate the water level
-    setCurrentLevel(level);
-  }, [level]);
+    const fetchLevel = async () => {
+      try {
+        const response = await fetch('/api/getSensorData');
+        const result = await response.json();
+        
+        
+        if (result.success && result.data ) {
+          // Convert sensor value to percentage (assuming MAX_VALUE is your maximum sensor reading)
+          const MAX_VALUE = 2000;
+          const MIN_VALUE = 24;
+
+          const formattedData = result.data.map((item: SensorData) => ({
+            ...item,
+            sensor1: MAX_VALUE - Math.max(0,((Math.round(item.sensor1 * 100) / 100) - 13) * MLITTER_PER_CM),
+            
+          }));
+          const sensorValue = formattedData[0]["sensor1"];
+
+          
+          
+          // Inverse the percentage calculation since ultrasonic readings are inverse
+          const percentage =  Math.max(0, (sensorValue / MAX_VALUE * 100));
+          setCurrentLevel(percentage);
+        }
+      } catch (error) {
+        console.error('Failed to fetch tank level:', error);
+      }
+    };
+
+    fetchLevel();
+    const interval = setInterval(fetchLevel, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   return (
-
     <div className="flex p-4 rounded-3xl shadow-lg">
       <div
         className="bg-zinc-950"
@@ -38,7 +73,7 @@ const TankLevel: React.FC<TankLevelProps> = ({ level, height = 200, width = 100,
             width: "100%",
             height: `${currentLevel}%`,
             backgroundColor: color,
-            transition: "height 1s ease-in-out",
+            transition: "height 0.5s ease-in-out",
           }}
         >
           {/* Water surface effect */}

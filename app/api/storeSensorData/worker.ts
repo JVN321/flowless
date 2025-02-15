@@ -9,6 +9,29 @@ const pool = new Pool({
 });
 
 const ESP32_URL = process.env.ESP32_URL || "http://localhost:3000/api/getSensorData";
+const MIN_LEVEL = 200;  // Minimum water level threshold
+const MAX_LEVEL = 1600; // Maximum water level threshold
+const esphost = process.env.ESP32_URL.slice(0, -8) + "led";
+async function controlMotor(isRunning: boolean) {
+
+    try {
+      console.log(`Sending request to change motor state to: ${isRunning ? 'Running' : 'Stopped'}`);
+      
+      await fetch(esphost, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
+        // Send 'on' or 'off' as the state parameter
+        body: `state=${isRunning ? 'on' : 'off'}`
+      });
+      
+      
+    } catch (error) {
+      console.error("Error sending request:", error);
+    }
+};
+
 
 async function fetchAndStoreSensorData() {
   try {
@@ -20,7 +43,15 @@ async function fetchAndStoreSensorData() {
       ORDER BY timestamp DESC 
       LIMIT 2
     `);
-    if (data.sensor1 > 0) {
+
+    if (data.sensor1 >= 0) {
+      // Auto control motor based on water level
+      if (data.sensor1 < MIN_LEVEL) {
+        await controlMotor(true); // Start motor when water level is too low
+      } else if (data.sensor1 > MAX_LEVEL) {
+        await controlMotor(false); // Stop motor when water level is high enough
+      }
+
       await pool.query("INSERT INTO water_levels (sensor1, sensor2, timestamp) VALUES ($1, $2, NOW())", [
         data.sensor1,
         data.sensor2,
@@ -35,7 +66,7 @@ async function fetchAndStoreSensorData() {
           .split('/');
         const today = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
 
-        console.log(today);
+        //console.log(today);
         const updateResult = await pool.query(
           `
           UPDATE water_levels_daily 

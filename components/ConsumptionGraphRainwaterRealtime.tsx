@@ -14,7 +14,7 @@ interface SensorData {
   sensor2: number;
 }
 
-export default function ConsumptionGraphRealtime() {
+export default function ConsumptionGraphRainwaterRealtime() {
   const [sensorData, setSensorData] = useState<SensorData[]>([]);
   var currentValue = 0;
   useEffect(() => {
@@ -49,7 +49,7 @@ export default function ConsumptionGraphRealtime() {
 
   return (
     <div className="p-4 bg-white rounded-lg shadow-md">
-      <h2 className="text-xl font-semibold mb-4">Tank 1</h2>
+      <h2 className="text-xl font-semibold mb-4">Rain water Tank</h2>
       <ResponsiveContainer width="90%" height={400}>
         <AreaChart
           data={sensorData}
@@ -68,7 +68,7 @@ export default function ConsumptionGraphRealtime() {
           <Area
             type="monotone"
             dataKey="sensor1"
-            name="Tank 1"
+            name="Rainwater Tank"
             stroke="#8884d8"
             fill="#8884d8"
             fillOpacity={0.4}
