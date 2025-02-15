@@ -6,15 +6,19 @@ import MotorControls from "@/components/MotorControls";
 import ConsumptionGraphDaily from "@/components/ConsumptionGraphDaily";
 import ConsumptionGraphRealtime from "@/components/ConsumptionGraphRealtime";
 import DashboardNavbar from "@/components/DashboardNavbar";
+import Header from "@/components/Header";
 
 export default function Dashboard() {
   return (
     
     <div className="min-h-screen bg-white  w-full">
+      <Header />
       <div className="flex flex-col lg:flex-row gap-4 p-4 items-center justify-center">
         {/* Left column - Tanks and Controls */}
         <div className="flex flex-col gap-4 w-full lg:w-auto">
+        <h1 className="text-center text-xl">Current Levels</h1>
           <div className="flex flex-row flex-wrap items-center gap-4 justify-center">
+            
             <TankLevel  color="#2196f3" />
             <TankLevel  color="#2196f3" />
           </div>

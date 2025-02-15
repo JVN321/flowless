@@ -10,7 +10,7 @@ interface DashBoardNavbarProps {}
 
 const DashBoardNavbar: React.FC<DashBoardNavbarProps> = ({}) => {
   return (
-    <div className=" absolute bottom-0 z-10 bg-slate-200 bg-opacity-[100%]  shadow-lg w-full h-[60px] p-6 mt-5 mx-4 flex items-center justify-between px-6">
+    <div className=" absolute bottom-0 z-10 bg-gray-100 py-4 border-b border-gray-300  bg-opacity-[100%]  shadow-lg w-full h-[60px] p-6 mt-5 mx-4 flex items-center justify-between px-6">
       {/* Navigation Links */}
       <div className="flex-1 flex justify-center">
         <div className="flex space-x-4 sm:space-x-6 md:space-x-8 lg:space-x-10 items-center">

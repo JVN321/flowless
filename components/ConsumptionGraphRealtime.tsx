@@ -49,7 +49,7 @@ export default function ConsumptionGraphRealtime() {
 
   return (
     <div className="p-4 bg-white rounded-lg shadow-md">
-      <h2 className="text-xl font-semibold mb-4">Tank 1</h2>
+      <h2 className="text-xl font-semibold mb-4">Tank 1 Realtime Level</h2>
       <ResponsiveContainer width="90%" height={400}>
         <AreaChart
           data={sensorData}

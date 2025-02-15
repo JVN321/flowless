@@ -38,7 +38,7 @@ export default function ConsumptionGraphDaily() {
 
   return (
     <div className="p-4 bg-white rounded-lg shadow-md">
-      <h2 className="text-xl font-semibold mb-4">Tank 1</h2>
+      <h2 className="text-xl font-semibold mb-4">Tank 1 Daily Consumption</h2>
       <div style={{ width: '100%', height: 400 }}>
       <ResponsiveContainer width="100%" height="100%">
         <BarChart
